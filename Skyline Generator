@@ -1,0 +1,45 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def draw_triangle(height, width):
+    triangle = np.ones((height, width)) * 255  # White background
+    center = width // 2
+    for i in range(height):
+        start = max(0, center - i)
+        end = min(width, center + i + 1)
+        triangle[i, start:end] = 0
+    return triangle
+
+def generate_skyline(width, height, num_buildings):
+    skyline = np.ones((height, width)) * 255  # White background
+
+    building_width = width // num_buildings
+    building_heights = np.random.randint(height // 4, height, num_buildings)
+    add_triangle = np.random.choice([True, False], num_buildings)  # Randomly decide which buildings get triangles
+
+    for i in range(num_buildings):
+        x_start = i * building_width
+        x_end = (i + 1) * building_width
+        y_start = height - building_heights[i]
+        skyline[y_start:, x_start:x_end] = 0  # Black buildings
+
+        if add_triangle[i]:
+            triangle_height = building_heights[i] // 4
+            if y_start - triangle_height >= 0:  # Ensure the triangle fits within the image
+                triangle = draw_triangle(triangle_height, building_width)
+                skyline[y_start - triangle_height:y_start, x_start:x_end] = np.minimum(skyline[y_start - triangle_height:y_start, x_start:x_end], triangle)
+
+    return skyline
+
+# Parameters
+width = 800
+height = 400
+num_buildings = 20
+
+# Generate skyline
+skyline = generate_skyline(width, height, num_buildings)
+
+# Display the image
+plt.imshow(skyline, cmap='gray', vmin=0, vmax=255)
+plt.axis('off')
+plt.show()
