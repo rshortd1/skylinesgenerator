@@ -1,3 +1,3 @@
 # skylinesgenerator
 
-# a simple skyline generator using python
+a simple skyline generator using python
