@@ -32,8 +32,8 @@ def generate_skyline(width, height, num_buildings):
     return skyline
 
 # Parameters
-width = 800
-height = 400
+width = 1000
+height = 800
 num_buildings = 20
 
 # Generate skyline
